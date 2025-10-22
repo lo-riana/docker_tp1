@@ -27,3 +27,26 @@ ENV POSTGRES_DB=db \
 # init scripts:
 COPY initdb/*.sql /docker-entrypoint-initdb.d/
 
+4. We need a multistage build to keep the final Docker image smaller, faster, and cleaner. It lets us build the project with all the heavy tools (JDK, Maven) in the first stage, and then run only the compiled app in a lightweight image (JRE) in the second stage.
+Dockerfile :
+# Build stage : used to compile the app
+FROM eclipse-temurin:21-jdk-alpine AS myapp-build  # Use a JDK image to build the project
+ENV MYAPP_HOME=/opt/myapp
+WORKDIR $MYAPP_HOME
+
+RUN apk add --no-cache maven  # Install Maven to manage dependencies
+
+COPY pom.xml .                # Copy Maven configuration file
+COPY src ./src                # Copy source code
+RUN mvn package -DskipTests   # Build the Spring Boot jar without running tests
+
+# Run stage
+FROM eclipse-temurin:21-jre-alpine 
+ENV MYAPP_HOME=/opt/myapp
+WORKDIR $MYAPP_HOME
+
+# Copy the jar file built in the first stage
+COPY --from=myapp-build $MYAPP_HOME/target/*.jar $MYAPP_HOME/myapp.jar
+
+# Run the Spring Boot application
+ENTRYPOINT ["java", "-jar", "myapp.jar"]

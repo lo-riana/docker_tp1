@@ -16,3 +16,6 @@ Thumbs.db
 
 # Docker volumes ou data
 data/
+
+# File ENV (db)
+.env
