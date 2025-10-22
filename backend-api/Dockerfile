@@ -1,5 +1,4 @@
-# Use a lightweight Java runtime
-FROM eclipse-temurin:21-jre
+FROM eclipse-temurin:21-jdk-alpine
 
 # Set working directory
 WORKDIR /app
