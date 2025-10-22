@@ -1,0 +1,29 @@
+PART 1
+
+1. It's better to run the container with a flag instead of putting variable in the Dockerfile because values in the Dockerfile stay inside the image, while -e keeps them private and easier to change.
+2. We need a volume because it stores the database files on the host machine, so the data stays even if the container is removed.
+3. 
+commands :
+# Build image
+docker build -t lorianaa/tpfirstapp .
+
+# Network
+docker network create app-network
+
+# Run Postgres with persistence 
+docker run -d --name tpfirstdb --network app-network \
+  -v "C:\Users\loria\Documents\I2-efrei\Docker\tp_1\data:/var/lib/postgresql/data" \
+  -e POSTGRES_DB=db -e POSTGRES_USER=usr -e POSTGRES_PASSWORD=pwd \
+  lorianaa/tpfirstapp
+
+# Adminer
+docker run -d --name adminer --network app-network -p 8081:8080 adminer
+
+Dockerfile :
+FROM postgres:17.2-alpine
+ENV POSTGRES_DB=db \
+    POSTGRES_USER=usr \
+    POSTGRES_PASSWORD=pwd
+# init scripts:
+COPY initdb/*.sql /docker-entrypoint-initdb.d/
+
