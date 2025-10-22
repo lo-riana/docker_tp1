@@ -1,0 +1,18 @@
+# Fichiers compilés Java
+*.class
+
+# Logs
+*.log
+
+# Dossiers temporaires
+tmp/
+temp/
+
+# Fichiers système (Windows, macOS, IDE)
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Docker volumes ou data
+data/
