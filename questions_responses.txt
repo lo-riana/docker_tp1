@@ -1,4 +1,4 @@
-PART 1
+TP 1
 
 1. It's better to run the container with a flag instead of putting variable in the Dockerfile because values in the Dockerfile stay inside the image, while -e keeps them private and easier to change.
 2. We need a volume because it stores the database files on the host machine, so the data stays even if the container is removed.
