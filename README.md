@@ -1,22 +1,13 @@
-TP 1
+### **TP 1**
 
 1. It's better to run the container with a flag instead of putting variable in the Dockerfile because values in the Dockerfile stay inside the image, while -e keeps them private and easier to change.
 2. We need a volume because it stores the database files on the host machine, so the data stays even if the container is removed.
 3. 
 commands :
-# Build image
-docker build -t lorianaa/tpfirstapp .
+docker build -t lorianaa/tpfirstapp .  
+docker network create app-network 
+docker run -d --name tpfirstdb --network app-network -v "C:\Users\loria\Documents\I2-efrei\Docker\tp_1\data:/var/lib/postgresql/data" -e POSTGRES_DB=db -e POSTGRES_USER=usr -e POSTGRES_PASSWORD=pwd lorianaa/tpfirstapp
 
-# Network
-docker network create app-network
-
-# Run Postgres with persistence 
-docker run -d --name tpfirstdb --network app-network \
-  -v "C:\Users\loria\Documents\I2-efrei\Docker\tp_1\data:/var/lib/postgresql/data" \
-  -e POSTGRES_DB=db -e POSTGRES_USER=usr -e POSTGRES_PASSWORD=pwd \
-  lorianaa/tpfirstapp
-
-# Adminer
 docker run -d --name adminer --network app-network -p 8081:8080 adminer
 
 Dockerfile :
@@ -25,27 +16,24 @@ COPY initdb/*.sql /docker-entrypoint-initdb.d/
 
 4. We need a multistage build to keep the final Docker image smaller, faster, and cleaner. It lets us build the project with all the heavy tools (JDK, Maven) in the first stage, and then run only the compiled app in a lightweight image (JRE) in the second stage.
 Dockerfile :
-# Build stage : used to compile the app
-FROM eclipse-temurin:21-jdk-alpine AS myapp-build  # Use a JDK image to build the project
+FROM eclipse-temurin:21-jdk-alpine AS myapp-build  # use JDK to build the project
 ENV MYAPP_HOME=/opt/myapp
 WORKDIR $MYAPP_HOME
 
-RUN apk add --no-cache maven  # Install Maven to manage dependencies
+RUN apk add --no-cache maven  # install Maven 
 
-COPY pom.xml .                # Copy Maven configuration file
-COPY src ./src                # Copy source code
-RUN mvn package -DskipTests   # Build the Spring Boot jar without running tests
+COPY pom.xml .                # copy Maven configuration file
+COPY src ./src                # copy source code
+RUN mvn package -DskipTests   # build the Spring Boot jar without running tests
 
-# Run stage
 FROM eclipse-temurin:21-jre-alpine 
 ENV MYAPP_HOME=/opt/myapp
 WORKDIR $MYAPP_HOME
 
-# Copy the jar file built in the first stage
-COPY --from=myapp-build $MYAPP_HOME/target/*.jar $MYAPP_HOME/myapp.jar
 
-# Run the Spring Boot application
-ENTRYPOINT ["java", "-jar", "myapp.jar"]
+COPY --from=myapp-build $MYAPP_HOME/target/*.jar # copy the jar file built in the first stage $MYAPP_HOME/myapp.jar
+
+ENTRYPOINT ["java", "-jar", "myapp.jar"] # run the Spring Boot application
 
 5. We need a reverse proxy because it receives client requests and forwards them to the backend server. It helps hide the backend’s address, manage traffic, and handle things like security or HTTPS. It also makes the application easier to access through a single public entry point.
 
@@ -74,3 +62,6 @@ docker tag lorianaa/http-server:latest lorianaa/http-server:1.0.0
 docker push lorianaa/http-server:1.0.0
 
 10. We publish images to an online repository (like Docker Hub) so they can be shared, reused, and deployed easily on any machine.
+
+
+### **TP 2** 
