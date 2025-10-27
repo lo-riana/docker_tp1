@@ -2,7 +2,6 @@ services:
     backend:
         build:
           context: ./simpleapi
-          dockerfile: Dockerfile
         networks:
           - app-network
         env_file: 
@@ -14,21 +13,19 @@ services:
 
 
     database:
-        image: 
-          postgres:17.2-alpine
+        build:
+          context: ./initdb
         networks:
           - app-network
         env_file: 
           - .env 
         volumes:
           - pgdata:/var/lib/postgresql/data
-          - ./initdb:/docker-entrypoint-initdb.d:ro
 
 
     httpd:
         build:
-          context: ./http-server
-          dockerfile: Dockerfile
+          context: ./httpd-server
         ports:
           - "8084:80"
         networks:
