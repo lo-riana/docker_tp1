@@ -37,7 +37,7 @@ jobs:
           distribution: 'temurin'
 
       - name: SonarCloud analysis
-        run: mvn -B verify sonar:sonar -Dsonar.projectKey=lo-riana -Dsonar.organization=tp-devops -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${{ secrets.SONAR_TOKEN }}  --file ./simpleapi/pom.xml
+        run: mvn -B verify sonar:sonar -Dsonar.projectKey=lo-riana_docker_tp1 -Dsonar.organization=lo-riana -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${{ secrets.SONAR_TOKEN }}  --file ./simpleapi/pom.xml
       
       - name: Build and test with Maven
         run: mvn clean verify --file ./simpleapi/pom.xml
