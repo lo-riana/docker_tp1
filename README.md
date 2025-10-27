@@ -65,3 +65,16 @@ docker push lorianaa/http-server:1.0.0
 
 
 ### **TP 2** 
+
+1. TestContainers is a Java library that provides instances of Docker containers for testing purposes. 
+
+2. We need secured variables to protect sensitive informations like passwords, API tokens, and other  from being exposed in our source code. 
+
+3. The `needs: test-backend` creates a dependency between jobs, ensuring that the `build-and-push-docker-image` job only runs if the `test-backend` job completes successfully. This prevents building and publishing potentially broken or faulty Docker images. Without this dependency, images would be built and pushed even if tests fail, which could deploy defective code to production environments.
+
+4. We push Docker images to a registry like Docker Hub for several reasons:
+- **Versioning and Reproducibility**: Maintain versioned artifacts that can be reliably deployed
+- **Sharing and Collaboration**: Make images available to other team members and environments
+- **CI/CD Pipeline**: Enable automated deployment processes
+- **Backup and Recovery**: Store images centrally for disaster recovery
+- **Environment Consistency**: Ensure identical images run across development, testing, and production
