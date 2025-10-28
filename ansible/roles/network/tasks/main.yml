@@ -1,0 +1,12 @@
+---
+# tasks file for roles/network
+
+- name: Create Docker network 
+  community.docker.docker_network:
+    name: app-network
+    state: present
+
+- name: Create Proxy network 
+  community.docker.docker_network:
+    name: proxy-network
+    state: present

@@ -1,0 +1,16 @@
+---
+# tasks file for roles/database
+
+- name: Run database container
+  community.docker.docker_container:
+    name: database
+    image: lorianaa/tp-devops-database:latest
+    env:
+      POSTGRES_DB: "{{ POSTGRES_DB }}"
+      POSTGRES_USER: "{{ POSTGRES_USER }}"
+      POSTGRES_PASSWORD: "{{ POSTGRES_PASSWORD }}"
+    networks:
+      - name: app-network
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    state: started

@@ -73,3 +73,8 @@ docker push lorianaa/http-server:1.0.0
 3. The `needs: test-backend` creates a dependency between jobs, ensuring that the `build-and-push-docker-image` job only runs if the `test-backend` job completes successfully. This prevents building and publishing potentially broken or faulty Docker images. Without this dependency, images would be built and pushed even if tests fail, which could deploy defective code to production environments.
 
 4. We push Docker images to Docker Hub to store versioned artifacts that can be easily shared with team members, used in automated deployment pipelines, and ensure consistent environments.
+
+### **TP 3** 
+
+
+

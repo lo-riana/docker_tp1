@@ -1,0 +1,12 @@
+---
+# tasks file for roles/proxy
+
+- name: Run HTTP reverse proxy
+  community.docker.docker_container:
+    name: httpd
+    image: "lorianaa/tp-devops-httpd:latest"
+    ports:
+      - "80:80"
+    networks:
+      - name: proxy-network
+    state: started

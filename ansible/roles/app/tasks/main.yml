@@ -1,0 +1,17 @@
+---
+# tasks file for roles/app
+
+- name: Run backend API 
+  community.docker.docker_container:
+    name: backend
+    image: "lorianaa/tp-devops-simple-api:latest"
+    restart_policy: on-failure
+    env:
+      SPRING_DATASOURCE_URL: "jdbc:postgresql://{{ POSTGRES_HOST }}:5432/{{ POSTGRES_DB }}"
+      SPRING_DATASOURCE_USERNAME: "{{ POSTGRES_USER }}"
+      SPRING_DATASOURCE_PASSWORD: "{{ POSTGRES_PASSWORD }}"
+      SPRING_PROFILES_ACTIVE: "prod"
+    networks:
+      - name: app-network
+      - name: proxy-network
+    state: started

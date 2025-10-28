@@ -19,3 +19,4 @@ data/
 
 # File ENV (db)
 .env
+ansible/env_var.yml

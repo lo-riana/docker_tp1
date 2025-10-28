@@ -1,0 +1,14 @@
+- name: Deploy App
+  hosts: all
+  gather_facts: true
+  become: true
+
+  vars_files:
+    - env_var.yml
+
+  roles:
+    - docker
+    - network
+    - database
+    - app
+    - proxy
