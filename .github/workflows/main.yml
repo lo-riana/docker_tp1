@@ -104,10 +104,20 @@ jobs:
         env:
           ANSIBLE_HOST_KEY_CHECKING: False
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
         run: |
           mkdir -p ~/.ssh
           echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
           chmod 400 ~/.ssh/id_rsa
           
           cd ansible
+          
+          echo "---" > env_var.yml
+          echo "POSTGRES_DB: \"$POSTGRES_DB\"" >> env_var.yml
+          echo "POSTGRES_USER: \"$POSTGRES_USER\"" >> env_var.yml
+          echo "POSTGRES_PASSWORD: \"$POSTGRES_PASSWORD\"" >> env_var.yml
+          echo "POSTGRES_HOST: \"database\"" >> env_var.yml
+          
           ansible-playbook -i inventories/setup.yml playbook.yml
