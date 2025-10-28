@@ -76,5 +76,11 @@ docker push lorianaa/http-server:1.0.0
 
 ### **TP 3** 
 
+Continuous Deployment
 
+Non, ce n'est pas sécurisé.
+Risques :
+- Images compromises : Quelqu'un pourrait pousser - du code malveillant
+- Erreurs non détectées : Bugs qui cassent la production
+- Dépendances vulnérables : Nouvelles vulnérabilités non testées
 
